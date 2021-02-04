@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="pin-on-screen" class="form-control" type="text">
+                    <button id="generate-pin" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="pin-input" class="form-control" type="text">
+                    <div class="numbers">
+                        <div id="calc-button-clicked" class="calc-body">
+                            <div class="calc-button-row">
+                                <div class="button">7</div>
+                                <div class="button">8</div>
+                                <div class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">4</div>
+                                <div class="button">5</div>
+                                <div class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">1</div>
+                                <div class="button">2</div>
+                                <div class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button">B</div>
+                                <div class="button">0</div>
+                                <div class="button">C</div>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="submit-button-clicked" type="submit" class="submit-btn">Submit</button>
+                            <p class="action-left"> <span id="try-left">3</span> try left</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notify-section">
+                <p id="incorrect" class="notify">❌ Pin Didn't Match, Please try again</p>
+                <p id="correct" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            </div>
+        </div>
+        <script>
+            const generatePinClicked = document.getElementById('generate-pin');
+            generatePinClicked.addEventListener('click', function () {
+                const pinOnScreen = Math.floor(Math.random() * (10000 - 1000) + 1000);
+                document.getElementById('pin-on-screen').value = pinOnScreen;
+            })
+            const calcButtonClicked = document.getElementById('calc-button-clicked');
+            calcButtonClicked.addEventListener('click', function (event) {
+                pinDigit = event.target.innerText;
+                const pinInput = document.getElementById('pin-input');
+                if (isNaN(pinDigit)) {
+                    if (pinDigit == 'B') {
+                        pinInput.value = pinInput.value.substr(0, pinInput.value.length - 1);
+                    }
+                    else {
+                        pinInput.value = "";
+                    }
+                } else {
+                    pinInput.value = pinInput.value + pinDigit;
+                }
+            })
+            const submitButtonClicked = document.getElementById('submit-button-clicked');
+            submitButtonClicked.addEventListener('click', function () {
+                let pinOnScreen = document.getElementById('pin-on-screen').value;
+                let pinInput = document.getElementById('pin-input').value;
+                if (pinOnScreen === pinInput) {
+                    document.getElementById('correct').style.display = "block";
+                }
+                else {
+                    document.getElementById('incorrect').style.display = "block";
+                    let tryLeft = parseInt(document.getElementById('try-left').innerText);
+                    if (tryLeft > 0 && tryLeft != 0) {
+                        tryLeft = tryLeft - 1;
+                    }
+                    document.getElementById('try-left').innerText = tryLeft;
+                }
+            })
+        </script>
+</body>
+
+</html>
